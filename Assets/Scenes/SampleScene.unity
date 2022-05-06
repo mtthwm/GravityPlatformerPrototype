@@ -631,8 +631,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   rotationSpeed: 9
-  jumpForce: 15
-  gravityForce: -9.8
+  jumpForce: 16
+  gravityForce: -8
+  gravityPauseTime: 0.1
 --- !u!54 &1724823176
 Rigidbody:
   m_ObjectHideFlags: 0

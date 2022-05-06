@@ -9,14 +9,14 @@ public class GravityAffected : MonoBehaviour
     [SerializeField] float rotationSpeed = 2f;
     [SerializeField] float jumpForce = 20f;
     [SerializeField] float gravityForce = -9.8f;
+    [SerializeField] float gravityPauseTime = 0.4f;
 
     LinkedList<GravityField> fields = new LinkedList<GravityField>();
     Rigidbody rb;
     Vector3 facingDir;
-
     Vector3 moveVelocity;
-    Vector3 jumpVelocity;
     Vector3 gravityVelocity;
+    private float lastJump;
 
     public void Move (Vector2 dir)
     {
@@ -32,9 +32,19 @@ public class GravityAffected : MonoBehaviour
         }
     }
 
+    public void EndMove ()
+    {
+        moveVelocity = Vector3.zero;
+    }
+
     public void Jump ()
     {
-        jumpVelocity = (Vector3) GetGravityDirection() * jumpForce * Time.deltaTime;
+        Vector3? dir = GetGravityDirection();
+        if (dir != null)
+        {
+            gravityVelocity += (Vector3) dir * jumpForce;
+            lastJump = Time.time;
+        }
     }
 
     public void AddAffectingField (GravityField field)
@@ -67,9 +77,11 @@ public class GravityAffected : MonoBehaviour
         Vector3? dir = GetGravityDirection();
         if (dir != null)
         {
-            Debug.Log(moveVelocity + " " + jumpVelocity + " " + gravityVelocity);
-            gravityVelocity = (Vector3)GetGravityDirection() * gravityForce;
-            rb.velocity = moveVelocity + jumpVelocity + gravityVelocity;
+            rb.velocity = moveVelocity + gravityVelocity;
+            if (Time.time - lastJump >= gravityPauseTime)
+            {
+                gravityVelocity = (Vector3)GetGravityDirection() * gravityForce;
+            }
         }
         
     }

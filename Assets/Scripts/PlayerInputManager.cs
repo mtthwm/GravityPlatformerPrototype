@@ -31,7 +31,6 @@ public class PlayerInputManager : MonoBehaviour
 
     public void HandleJump (InputAction.CallbackContext value)
     {
-        Debug.Log("HandleJump");
         if (enabled)
         {
             if (value.performed)
@@ -47,6 +46,10 @@ public class PlayerInputManager : MonoBehaviour
         {
             InputAction.CallbackContext safeContext = (InputAction.CallbackContext)callbackContext;
             gravityAffected.Move(safeContext.ReadValue<Vector2>());
+        }
+        else
+        {
+            gravityAffected.EndMove();
         }
     }
 }
