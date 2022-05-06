@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    private GravityAffected gravityAffected;
+    private GravityAffectedMovement gravityAffectedMovement;
 
     InputAction.CallbackContext? callbackContext;
 
     private void Start()
     {
-        gravityAffected = GetComponent<GravityAffected>();
+        gravityAffectedMovement = GetComponent<GravityAffectedMovement>();
     }
 
     public void HandleMovement(InputAction.CallbackContext value)
@@ -35,7 +35,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (value.performed)
             {
-                gravityAffected.Jump();
+                gravityAffectedMovement.Jump();
             }
         }
     }
@@ -45,11 +45,11 @@ public class PlayerInputManager : MonoBehaviour
         if (callbackContext != null)
         {
             InputAction.CallbackContext safeContext = (InputAction.CallbackContext)callbackContext;
-            gravityAffected.Move(safeContext.ReadValue<Vector2>());
+            gravityAffectedMovement.Move(safeContext.ReadValue<Vector2>());
         }
         else
         {
-            gravityAffected.EndMove();
+            gravityAffectedMovement.EndMove();
         }
     }
 }

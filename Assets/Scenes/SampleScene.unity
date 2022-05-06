@@ -595,6 +595,7 @@ GameObject:
   - component: {fileID: 1724823175}
   - component: {fileID: 1724823178}
   - component: {fileID: 1724823177}
+  - component: {fileID: 1724823179}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -629,11 +630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c404187aedfe540bcb49d1f152e4d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
-  rotationSpeed: 9
-  jumpForce: 16
-  gravityForce: -8
-  gravityPauseTime: 0.1
 --- !u!54 &1724823176
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -772,6 +768,23 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1724823179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724823173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc8891880d44974e97d195d6870aa38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 8
+  rotationSpeed: 8
+  jumpForce: 8
+  gravityForce: -5
+  gravityPauseTime: 0.2
 --- !u!1 &1959814212
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,6 @@ public abstract class GravityField : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("ENTER " + other);
         GravityAffected affected = other.transform.root.GetComponent<GravityAffected>();
         if (affected != null)
         {
@@ -18,7 +17,6 @@ public abstract class GravityField : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("EXIT " + other);
         GravityAffected affected = other.transform.root.GetComponent<GravityAffected>();
         if (affected != null)
         {
