@@ -90,18 +90,11 @@ public class PlayerInputManager : MonoBehaviour
                 Debug.DrawRay(this.transform.position, adjustedCameraForward * 3f, Color.cyan);
                 Debug.DrawRay(this.transform.position, (Vector3)gravityDir * 3f, Color.cyan);
 
-                Vector3 realMoveDir = Utils.Align2DVector((Vector3)gravityDir, dir);
+                Vector2 heading = new Vector2(Vector3.Dot(adjustedCameraForward, Vector3.right), Vector3.Dot(adjustedCameraForward, Vector3.forward));
 
-                Vector3 adjustedWorldForward = Quaternion.FromToRotation(Vector3.up, (Vector3)gravityDir) * Vector3.forward;
+                Vector2 adjustedDir = Quaternion.FromToRotation(Vector2.up, heading) * dir;
 
-                Debug.DrawRay(this.transform.position, adjustedWorldForward * 3f, Color.yellow);
-                Debug.DrawRay(this.transform.position, (Vector3)gravityDir * 3f, Color.yellow);
-
-                Quaternion necessaryRotation = Quaternion.FromToRotation(adjustedCameraForward, adjustedWorldForward);
-
-                Debug.DrawRay(this.transform.position, realMoveDir * 3f, Color.red);
-                realMoveDir = necessaryRotation * realMoveDir;
-                Debug.DrawRay(this.transform.position, realMoveDir * 3f, Color.black);
+                Vector3 realMoveDir = Utils.Align2DVector((Vector3)gravityDir, adjustedDir);
 
                 gravityAffectedMovement.Move(realMoveDir);
             }
