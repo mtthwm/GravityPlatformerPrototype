@@ -90,13 +90,16 @@ public class PlayerInputManager : MonoBehaviour
                 Debug.DrawRay(this.transform.position, adjustedCameraForward * 3f, Color.cyan);
                 Debug.DrawRay(this.transform.position, (Vector3)gravityDir * 3f, Color.cyan);
 
-                Vector2 heading = new Vector2(Vector3.Dot(adjustedCameraForward, Vector3.right), Vector3.Dot(adjustedCameraForward, Vector3.forward));
+                float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
 
-                Vector2 adjustedDir = Quaternion.FromToRotation(Vector2.up, heading) * dir;
+                Debug.Log("" + dir.x + " / " + dir.y + " = " + (dir.x / dir.y));
+                Debug.Log("arctan(" + dir.x / dir.y + ") = " + Mathf.Atan(dir.x / dir.y) + " or " + inputAsAngleDegrees);
 
-                Vector3 realMoveDir = Utils.Align2DVector((Vector3)gravityDir, adjustedDir);
+                Quaternion necessaryRotation = Quaternion.AngleAxis(inputAsAngleDegrees, (Vector3)gravityDir);
 
-                gravityAffectedMovement.Move(realMoveDir);
+                Vector3 realMoveDir = necessaryRotation * adjustedCameraForward;
+
+                gravityAffectedMovement.Move(Utils.IsPointingDown(dir) * realMoveDir);
             }
         }
         else

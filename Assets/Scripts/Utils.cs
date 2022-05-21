@@ -17,4 +17,16 @@ public static class Utils
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, normal);
         return rotation * dir3;
     }
+
+    /// <summary>
+    /// Determines whether the specified vector is pointing down. Not my brightest moment.
+    /// </summary>
+    /// <param name="vector">The vector.</param>
+    /// <returns>
+    ///   <c>-1</c> if vector is pointing down, otherwise, <c>1</c>.
+    /// </returns>
+    public static int IsPointingDown (Vector2 vector)
+    {
+        return vector.y < 0 ? -1 : 1;
+    }
 }
