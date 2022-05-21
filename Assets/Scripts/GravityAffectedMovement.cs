@@ -11,6 +11,7 @@ public class GravityAffectedMovement : MonoBehaviour
     [SerializeField] float gravityPauseTime = 0.4f;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundLayers;
+    [SerializeField] GameObject rig;
 
     Vector3 moveVelocity;
     Vector3 gravityVelocity;
@@ -60,9 +61,14 @@ public class GravityAffectedMovement : MonoBehaviour
         }
     }
 
+    public Vector3 GetFacingDirection()
+    {
+        return facingDir;
+    }
+
     private void Start()
     {
-        facingDir = transform.forward;
+        facingDir = rig.transform.forward;
         gravityAffected = GetComponent<GravityAffected>();
         rb = gameObject.GetComponent<Rigidbody>();
     }
@@ -88,7 +94,11 @@ public class GravityAffectedMovement : MonoBehaviour
 
     private void RotateFacing()
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(facingDir), rotationSpeed);
+        Vector3? dir = gravityAffected.GetGravityDirection();
+        if (dir != null)
+        {
+            rig.transform.rotation = Quaternion.RotateTowards(Quaternion.LookRotation(rig.transform.forward, rig.transform.up), Quaternion.LookRotation(facingDir, (Vector3)dir), rotationSpeed);
+        }
     }
 
     private bool IsGrounded ()

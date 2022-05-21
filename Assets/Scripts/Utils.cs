@@ -10,9 +10,10 @@ public static class Utils
     /// <param name="normal">The normal vector.</param>
     /// <param name="dir">The direction.</param>
     /// <returns></returns>
-    public static Vector3 Align2DVector (Vector3 normal, Vector2 dir)
+    public static Vector3 Align2DVector(Vector3 normal, Vector2 dir)
     {
         Vector3 dir3 = new Vector3(dir.x, 0, dir.y);
+        //Quaternion rotation = Quaternion.LookRotation(forward, normal);
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, normal);
         return rotation * dir3;
     }
