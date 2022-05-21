@@ -76,10 +76,19 @@ public class PlayerInputManager : MonoBehaviour
 
             Vector2 dir = safeContext.ReadValue<Vector2>();
 
-            //Rotate the input vector to reflect the camera's orientation
-            dir = Quaternion.AngleAxis(-Camera.main.transform.rotation.eulerAngles.y, Vector3.forward) * dir;
+            Quaternion rotationFromCameraUpToGravityUp = Quaternion.FromToRotation(Camera.main.transform.up, (Vector3) gravityDir);
 
-            Debug.DrawRay(tester.position, dir * 2f, Color.red);
+            Vector3 fixedCameraForward = rotationFromCameraUpToGravityUp * Camera.main.transform.forward;
+
+            Debug.DrawRay(this.transform.position, fixedCameraForward * 3f, Color.cyan);
+
+            //Vector3 camForward = Camera.main.transform.forward;
+            //float x = Vector3.Dot(camForward, transform.right);
+            //float y = Vector3.Dot(camForward, transform.forward);
+
+            //Vector2 cameraVec = new Vector2(x, y).normalized;
+            
+
             testText.text = "" + -Camera.main.transform.rotation.eulerAngles.y;
 
             if (gravityDir != null)
