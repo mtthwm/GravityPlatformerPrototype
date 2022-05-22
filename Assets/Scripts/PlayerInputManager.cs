@@ -10,6 +10,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
+    private GunManager gunManager;
 
     InputAction.CallbackContext? callbackContext;
 
@@ -17,6 +18,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         gravityAffectedMovement = GetComponent<GravityAffectedMovement>();
         gravityAffected = GetComponent<GravityAffected>();
+        gunManager = GetComponent<GunManager>();
     }
 
     public void HandleMovement(InputAction.CallbackContext value)
@@ -34,9 +36,18 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    public void StartGunfire ()
+    public void ToggleShoot (InputAction.CallbackContext value)
     {
-
+        if (value.performed)
+        {
+            Debug.Log("Pressed...");
+            gunManager.BeginShoot();
+        }
+        else if (value.canceled)
+        {
+            Debug.Log("Released...");
+            gunManager.EndShoot();
+        }
     }
 
     public void HandleJump (InputAction.CallbackContext value)

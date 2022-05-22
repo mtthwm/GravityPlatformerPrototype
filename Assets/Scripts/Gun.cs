@@ -16,13 +16,14 @@ public class Gun : MonoBehaviour
     [SerializeField] int capacity = 10; // NOT USED
     [SerializeField] int bulletCount = 1;
     [SerializeField] float range = 50f;
+    [SerializeField] float trailPersistTime = 0.05f;
     [SerializeField] LayerMask layers;
     [SerializeField] GunTypes type = GunTypes.Automatic;
+    [SerializeField] GameObject bulletTrailPrefab;
 
     Transform origin;
     Transform cameraTransform;
     int continuousShots;
-    bool isShooting;
 
     Vector3 debug_target;
 
@@ -32,17 +33,23 @@ public class Gun : MonoBehaviour
         cameraTransform = Camera.main.transform;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(debug_target, 0.1f);
+    }
+
     public void BeginShoot ()
     {
-        StartCoroutine("HandleShoot");
+        StartCoroutine("ShootCoroutine");
     }
 
     public void EndShoot ()
     {
-        StopCoroutine("HandleShoot");
+        StopCoroutine("ShootCoroutine");
     }
 
-    private IEnumerator HandleShoot ()
+    private IEnumerator ShootCoroutine ()
     {
         while (true)
         {
@@ -62,30 +69,45 @@ public class Gun : MonoBehaviour
 
         debug_target = target;
 
+        for (int i = 0; i < bulletCount; i++)
+        {
+            HandleShot(target);
+        }
+    }
+
+    private void HandleShot (Vector3 target)
+    {
+        RaycastHit hit;
+        bool hasHit = Physics.Raycast(origin.position, target - origin.position, out hit, range, layers, QueryTriggerInteraction.Ignore);
+
+        if (hasHit && hit.point != null)
+        {
+            Debug.Log("HIT A THING");
+            StartCoroutine(BulletTrailCoroutine(origin.position, hit.point, trailPersistTime));
+        }
+        else
+        {
+            Debug.Log("HIT NOTHING");
+            StartCoroutine(BulletTrailCoroutine(origin.position, target, trailPersistTime));
+        }
+
+        
+    }
+
+    private IEnumerator BulletTrailCoroutine (Vector3 start, Vector3 end, float time)
+    {
+        GameObject trailRenderer = Instantiate(bulletTrailPrefab);
+        LineRenderer line = trailRenderer.GetComponent<LineRenderer>();
+        line.SetPosition(0, start);
+        line.SetPosition(1, end);
+
+        yield return new WaitForSeconds(time);
+
+        Destroy(trailRenderer);
     }
 
     private Vector3 ObtainTarget ()
     {
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward.normalized, out hit, range, layers, QueryTriggerInteraction.Ignore);
-        Vector3 target;
-
-        if (hasHit)
-        {
-            target = hit.point;
-
-        }
-        else
-        {
-            target = cameraTransform.position + (cameraTransform.forward.normalized * range);
-        }
-
-        return target;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(debug_target, 0.1f);
+        return cameraTransform.position + (cameraTransform.forward.normalized * range);
     }
 }

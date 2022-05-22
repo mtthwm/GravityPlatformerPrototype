@@ -7,8 +7,13 @@ public class GunManager : MonoBehaviour
     public Gun activeGun;
 
 
-    public void Shoot ()
+    public void BeginShoot()
     {
-        activeGun.Shoot();
+        activeGun.BeginShoot();
+    }
+
+    public void EndShoot()
+    {
+        activeGun.EndShoot();
     }
 }

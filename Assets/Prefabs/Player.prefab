@@ -238,10 +238,10 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta,/Pen/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8849310797144331772}
-        m_TargetAssemblyTypeName: GunManager, Assembly-CSharp
-        m_MethodName: Shoot
-        m_Mode: 1
+      - m_Target: {fileID: 2086395004177068041}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
+        m_MethodName: ToggleShoot
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -502,13 +502,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 0.1
+  reloadSpeed: 1
   spread: 0.1
   capacity: 10
   bulletCount: 1
   range: 25
+  trailPersistTime: 0.05
   layers:
     serializedVersion: 2
     m_Bits: 4294967295
+  type: 0
+  bulletTrailPrefab: {fileID: 4952486540880510476, guid: ff6df721f4fdf934890592d9526c16d0, type: 3}
 --- !u!1 &2591481706977420498
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,7 +662,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7310277503320662301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.75, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2086395004177068038}
