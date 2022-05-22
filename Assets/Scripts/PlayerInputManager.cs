@@ -8,9 +8,6 @@ public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] Transform cameraTarget;
 
-    [SerializeField] Transform tester;
-    [SerializeField] TextMeshPro testText;
-
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
 
@@ -35,6 +32,11 @@ public class PlayerInputManager : MonoBehaviour
                 callbackContext = null;
             }
         }
+    }
+
+    public void StartGunfire ()
+    {
+
     }
 
     public void HandleJump (InputAction.CallbackContext value)
