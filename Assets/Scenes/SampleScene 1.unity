@@ -769,10 +769,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2086395003940201158, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 2d2eb9816bfabda4d918d41198b16bf0, type: 2}
     - target: {fileID: 2086395004177068037, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
       propertyPath: m_Name
       value: Player
@@ -829,25 +825,9 @@ PrefabInstance:
       propertyPath: testText
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 2086395004997590094, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 2d2eb9816bfabda4d918d41198b16bf0, type: 2}
-    - target: {fileID: 2337419691568732622, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
-      propertyPath: spread
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2337419691568732622, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
-      propertyPath: fireRate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2337419691568732622, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
-      propertyPath: trailPersistTime
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767715180675308306, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
+    - target: {fileID: 2086395004177068041, guid: 1660ba1ba296e39469a89358304617d9, type: 3}
+      propertyPath: shootDelay
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1660ba1ba296e39469a89358304617d9, type: 3}

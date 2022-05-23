@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public static class Utils
 {
@@ -41,8 +42,9 @@ public static class Utils
         return builder;
     }
 
-    public static Vector2 RandomVector ()
+    public static IEnumerator Delay (Action action, float time)
     {
-        return (new Vector2(Random.Range(-1, 1), Random.Range(-1, 1))).normalized;
+        yield return new WaitForSeconds(time);
+        action.Invoke();
     }
 }

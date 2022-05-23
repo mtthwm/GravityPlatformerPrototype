@@ -81,8 +81,6 @@ public class Gun : MonoBehaviour
         Vector3 direction = ObtainDirection(target);
         bool hasHit = Physics.Raycast(origin.position, direction, out hit, range, layers, QueryTriggerInteraction.Ignore);
 
-        Debug.DrawRay(origin.position, direction * range, Color.cyan, 10);
-
         if (hasHit)
         {
             ResolveHit(hit);

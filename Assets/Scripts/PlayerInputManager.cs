@@ -11,6 +11,7 @@ public class PlayerInputManager : MonoBehaviour
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
     private GunManager gunManager;
+    private bool isShooting;
 
     InputAction.CallbackContext? callbackContext;
 
@@ -38,36 +39,28 @@ public class PlayerInputManager : MonoBehaviour
 
     public void ToggleShootPrimary (InputAction.CallbackContext value)
     {
-        Vector3? gravityDir = gravityAffected.GetGravityDirection();
-        if (gravityDir != null)
-        {
-            gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
-        }
-
         if (value.performed)
         {
+            isShooting = true;
             gunManager.BeginShootPrimary();
         }
         else if (value.canceled)
         {
+            isShooting = false;
             gunManager.EndShootPrimary();
         }
     }
 
     public void ToggleShootSecondary(InputAction.CallbackContext value)
     {
-        Vector3? gravityDir = gravityAffected.GetGravityDirection();
-        if (gravityDir != null)
-        {
-            gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
-        }
-
         if (value.performed)
         {
             gunManager.BeginShootSecondary();
+            isShooting = true;
         }
         else if (value.canceled)
         {
+            isShooting = false;
             gunManager.EndShootSecondary();
         }
     }
@@ -87,6 +80,15 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleMove();
         UpdateCameraTarget();
+
+        if (isShooting)
+        {
+            Vector3? gravityDir = gravityAffected.GetGravityDirection();
+            if (gravityDir != null)
+            {
+                gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
+            }
+        }
     }
 
     private void UpdateCameraTarget ()
