@@ -78,7 +78,10 @@ public class Gun : MonoBehaviour
     protected virtual void HandleShot (Vector3 target)
     {
         RaycastHit hit;
-        bool hasHit = Physics.Raycast(origin.position, ObtainDirection(target), out hit, range, layers, QueryTriggerInteraction.Ignore);
+        Vector3 direction = ObtainDirection(target);
+        bool hasHit = Physics.Raycast(origin.position, direction, out hit, range, layers, QueryTriggerInteraction.Ignore);
+
+        Debug.DrawRay(origin.position, direction * range, Color.cyan, 10);
 
         if (hasHit)
         {
@@ -87,19 +90,17 @@ public class Gun : MonoBehaviour
         }
         else
         {
-            StartCoroutine(BulletTrailCoroutine(origin.position, target, trailPersistTime));
+            StartCoroutine(BulletTrailCoroutine(origin.position, origin.position + (direction * range), trailPersistTime));
         }
     }
 
     protected virtual Vector3 ObtainDirection (Vector3 target)
     {
-        Debug.Log("ObtainDirection");
-        Vector3 randomlyRotatedVector = Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up) * Vector3.right;
-        Vector3 adjustedRandomlyRotatedVector = Quaternion.FromToRotation(Vector3.up, (target - origin.position).normalized) * randomlyRotatedVector;
-        float randomRotation = Random.Range(-spread, spread);
-        Debug.Log(randomRotation + " ");
-        Quaternion finalRotation = Quaternion.AngleAxis(randomRotation, adjustedRandomlyRotatedVector);
-        return finalRotation * (target - origin.position).normalized;
+        Vector3 upVector = new Vector3(Random.Range(-spread, spread), 1f, Random.Range(-spread, spread));
+        Quaternion upToTarget = Quaternion.FromToRotation(Vector3.up, target - origin.position);
+        Vector3 final = upToTarget * upVector;
+        final = final.normalized;
+        return final;
     }
 
     protected virtual void ResolveHit (RaycastHit hit)
@@ -110,14 +111,14 @@ public class Gun : MonoBehaviour
 
     private IEnumerator BulletTrailCoroutine (Vector3 start, Vector3 end, float time)
     {
-        GameObject trailRenderer = Instantiate(bulletTrailPrefab);
-        LineRenderer line = trailRenderer.GetComponent<LineRenderer>();
-        line.SetPosition(0, start);
-        line.SetPosition(1, end);
+        LineRenderer trail = Instantiate(bulletTrailPrefab).GetComponent<LineRenderer>(); ;
+        trail.SetPosition(0, start);
+        trail.SetPosition(1, end);
 
         yield return new WaitForSeconds(time);
 
-        Destroy(trailRenderer);
+        Destroy(trail.gameObject);
+
     }
 
     private Vector3 ObtainTarget ()

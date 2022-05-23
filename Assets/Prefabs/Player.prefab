@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 8
-  rotationSpeed: 8
+  rotationSpeed: 12
   jumpForce: 8
   gravityForce: -5
   gravityPauseTime: 0.2
@@ -522,9 +522,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireRate: 0.1
   reloadSpeed: 1
-  spread: 0.1
+  spread: 0.25
   capacity: 10
-  bulletCount: 1
+  bulletCount: 10
   range: 25
   trailPersistTime: 0.05
   layers:

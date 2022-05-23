@@ -38,6 +38,12 @@ public class PlayerInputManager : MonoBehaviour
 
     public void ToggleShootPrimary (InputAction.CallbackContext value)
     {
+        Vector3? gravityDir = gravityAffected.GetGravityDirection();
+        if (gravityDir != null)
+        {
+            gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
+        }
+
         if (value.performed)
         {
             gunManager.BeginShootPrimary();
@@ -50,6 +56,12 @@ public class PlayerInputManager : MonoBehaviour
 
     public void ToggleShootSecondary(InputAction.CallbackContext value)
     {
+        Vector3? gravityDir = gravityAffected.GetGravityDirection();
+        if (gravityDir != null)
+        {
+            gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
+        }
+
         if (value.performed)
         {
             gunManager.BeginShootSecondary();
@@ -87,6 +99,13 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private Vector3 GetAdjustedCameraForward (Vector3 normal)
+    {
+        Quaternion rotationFromCameraUpToGravityUp = Quaternion.FromToRotation(Camera.main.transform.up, normal);
+        Vector3 adjustedCameraForward = rotationFromCameraUpToGravityUp * Camera.main.transform.forward;
+        return adjustedCameraForward;
+    }
+
     private void HandleMove ()
     {
         if (callbackContext != null)
@@ -96,24 +115,11 @@ public class PlayerInputManager : MonoBehaviour
 
             Vector2 dir = safeContext.ReadValue<Vector2>();
 
-            //Vector3 camForward = Camera.main.transform.forward;
-            //float x = Vector3.Dot(camForward, transform.right);
-            //float y = Vector3.Dot(camForward, transform.forward);
-
-            //Vector2 cameraVec = new Vector2(x, y).normalized;
-
             if (gravityDir != null)
             {
-                Quaternion rotationFromCameraUpToGravityUp = Quaternion.FromToRotation(Camera.main.transform.up, (Vector3)gravityDir);
-                Vector3 adjustedCameraForward = rotationFromCameraUpToGravityUp * Camera.main.transform.forward;
-
-                //Debug.DrawRay(this.transform.position, adjustedCameraForward * 3f, Color.cyan);
-                //Debug.DrawRay(this.transform.position, (Vector3)gravityDir * 3f, Color.cyan);
+                Vector3 adjustedCameraForward = GetAdjustedCameraForward((Vector3)gravityDir);
 
                 float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
-
-                //Debug.Log("" + dir.x + " / " + dir.y + " = " + (dir.x / dir.y));
-                //Debug.Log("arctan(" + dir.x / dir.y + ") = " + Mathf.Atan(dir.x / dir.y) + " or " + inputAsAngleDegrees);
 
                 Quaternion necessaryRotation = Quaternion.AngleAxis(inputAsAngleDegrees, (Vector3)gravityDir);
 

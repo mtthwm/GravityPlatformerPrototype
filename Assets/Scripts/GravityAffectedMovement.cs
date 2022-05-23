@@ -67,6 +67,11 @@ public class GravityAffectedMovement : MonoBehaviour
         return facingDir;
     }
 
+    public void SetFacingDirection (Vector3 direction)
+    {
+        facingDir = direction;
+    }
+
     public void Accellerate (Vector3 accelleration)
     {
         this.accelleration = accelleration;
