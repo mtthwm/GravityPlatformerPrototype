@@ -240,7 +240,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2086395004177068041}
         m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: ToggleShoot
+        m_MethodName: ToggleShootPrimary
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -308,6 +308,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0b4e342d-4f29-4e6f-afcd-c8a0f0cf0b84
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2086395004177068041}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
+        m_MethodName: ToggleShootSecondary
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9883d84b-903e-4adb-aad5-3b1f169ae8fd
+    m_ActionName: Player/FireSecondary[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -360,7 +376,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f32488dcdd29a4a8d4edabc2502985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeGun: {fileID: 2337419691568732622}
+  primaryGuns:
+  - {fileID: 2337419691568732622}
+  secondaryGuns:
+  - {fileID: 3785737689877612988}
 --- !u!1 &2086395004997590092
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,14 +499,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2288231616776562868}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3507469154687197234}
   - {fileID: 6418273333459543419}
-  m_Father: {fileID: 3767715180675308306}
-  m_RootOrder: 3
+  m_Father: {fileID: 1542075167147402156}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2337419691568732622
 MonoBehaviour:
@@ -513,6 +532,36 @@ MonoBehaviour:
     m_Bits: 4294967295
   type: 0
   bulletTrailPrefab: {fileID: 4952486540880510476, guid: ff6df721f4fdf934890592d9526c16d0, type: 3}
+--- !u!1 &2556013588976258285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2181822052910456590}
+  m_Layer: 0
+  m_Name: Origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2181822052910456590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2556013588976258285}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.243, y: 0, z: 0.791}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7219660398321578024}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2591481706977420498
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +592,64 @@ Transform:
   m_Father: {fileID: 4243323715259394108}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4920910211524853911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7219660398321578024}
+  - component: {fileID: 3785737689877612988}
+  m_Layer: 0
+  m_Name: GrapplingHook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7219660398321578024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4920910211524853911}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2181822052910456590}
+  m_Father: {fileID: 1542075167147402156}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3785737689877612988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4920910211524853911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0674e0a762f54304ea56c57718c668e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireRate: 0.1
+  reloadSpeed: 1
+  spread: 0.1
+  capacity: 10
+  bulletCount: 1
+  range: 50
+  trailPersistTime: 0.05
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  type: 0
+  bulletTrailPrefab: {fileID: 4952486540880510476, guid: ff6df721f4fdf934890592d9526c16d0, type: 3}
+  gravityMovement: {fileID: 2086395004177068043}
+  pullAccelleration: 5
 --- !u!1 &6448010399717672503
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +805,39 @@ Transform:
   - {fileID: 2086395003940201157}
   - {fileID: 2086395004997590093}
   - {fileID: 2086395003547845723}
-  - {fileID: 4243323715259394108}
+  - {fileID: 1542075167147402156}
   m_Father: {fileID: 2086395004177068038}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8835719107002090640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1542075167147402156}
+  m_Layer: 0
+  m_Name: Guns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1542075167147402156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8835719107002090640}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4243323715259394108}
+  - {fileID: 7219660398321578024}
+  m_Father: {fileID: 3767715180675308306}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

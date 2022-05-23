@@ -1,16 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GravityAffected : MonoBehaviour
 {
-    LinkedList<GravityField> fields = new LinkedList<GravityField>();
+    List<GravityField> fields = new List<GravityField>();
     Rigidbody rb;
 
     public void AddAffectingField (GravityField field)
     {
-        fields.AddLast(field);
+        fields.Add(field);
     }
 
     public void RemoveAffectingField (GravityField field)
@@ -24,9 +23,10 @@ public class GravityAffected : MonoBehaviour
     /// <returns>The normalized vector.</returns>
     public Vector3? GetGravityDirection()
     {
+        Debug.Log("GetGravityDirection! " + Utils.ListToString<GravityField>(fields));
         if (fields.Count > 0)
         {
-            GravityField currentField = fields.First.Value;
+            GravityField currentField = fields[0];
             Vector3 dir = currentField.getGravityDirection(this.transform.position);
             return dir;
         }

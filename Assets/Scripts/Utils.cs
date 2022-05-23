@@ -29,4 +29,15 @@ public static class Utils
     {
         return vector.y < 0 ? -1 : 1;
     }
+
+    public static string ListToString<T> (List<T> list)
+    {
+        string builder = "";
+        foreach (T o in list)
+        {
+            builder += o.ToString();
+        }
+
+        return builder;
+    }
 }

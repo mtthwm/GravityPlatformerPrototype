@@ -19,6 +19,7 @@ public class GravityAffectedMovement : MonoBehaviour
     Vector3 facingDir;
     GravityAffected gravityAffected;
     Rigidbody rb;
+    Vector3 accelleration;
 
     /// <summary>
     /// Directly moves an object in the specified direction. USE WITH CAUTION!!
@@ -66,6 +67,17 @@ public class GravityAffectedMovement : MonoBehaviour
         return facingDir;
     }
 
+    public void Accellerate (Vector3 accelleration)
+    {
+        this.accelleration = accelleration;
+    }
+
+    public void EndAccelleration ()
+    {
+        accelleration = Vector3.zero;
+        rb.velocity = Vector3.zero;
+    }
+
     private void Start()
     {
         facingDir = rig.transform.forward;
@@ -81,14 +93,21 @@ public class GravityAffectedMovement : MonoBehaviour
 
     private void HandleVelocity()
     {
-        Vector3? dir = gravityAffected.GetGravityDirection();
-        if (dir != null)
+        if (accelleration == Vector3.zero)
         {
-            rb.velocity = moveVelocity + gravityVelocity;
-            if (Time.time - lastJump >= gravityPauseTime)
+            Vector3? dir = gravityAffected.GetGravityDirection();
+            if (dir != null)
             {
-                gravityVelocity = (Vector3)gravityAffected.GetGravityDirection() * gravityForce;
+                rb.velocity = moveVelocity + gravityVelocity;
+                if (Time.time - lastJump >= gravityPauseTime)
+                {
+                    gravityVelocity = (Vector3)gravityAffected.GetGravityDirection() * gravityForce;
+                }
             }
+        }
+        else
+        {
+            rb.velocity += accelleration;
         }
     }
 

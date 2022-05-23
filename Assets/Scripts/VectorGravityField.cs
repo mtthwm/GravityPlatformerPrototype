@@ -15,4 +15,9 @@ public class VectorGravityField : GravityField
     {
         return (transform.rotation * direction).normalized;
     }
+
+    public override string ToString()
+    {
+        return direction.ToString();
+    }
 }

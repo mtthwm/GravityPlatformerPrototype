@@ -36,17 +36,27 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    public void ToggleShoot (InputAction.CallbackContext value)
+    public void ToggleShootPrimary (InputAction.CallbackContext value)
     {
         if (value.performed)
         {
-            Debug.Log("Pressed...");
-            gunManager.BeginShoot();
+            gunManager.BeginShootPrimary();
         }
         else if (value.canceled)
         {
-            Debug.Log("Released...");
-            gunManager.EndShoot();
+            gunManager.EndShootPrimary();
+        }
+    }
+
+    public void ToggleShootSecondary(InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            gunManager.BeginShootSecondary();
+        }
+        else if (value.canceled)
+        {
+            gunManager.EndShootSecondary();
         }
     }
 
@@ -69,14 +79,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void UpdateCameraTarget ()
     {
-        if (callbackContext != null)
-        {
-            Vector3? gravityDir = gravityAffected.GetGravityDirection();
+        Vector3? gravityDir = gravityAffected.GetGravityDirection();
 
-            if (gravityDir != null)
-            {
-                cameraTarget.transform.up = (Vector3) gravityDir;
-            }
+        if (gravityDir != null)
+        {
+            cameraTarget.transform.up = (Vector3) gravityDir;
         }
     }
 
@@ -100,13 +107,13 @@ public class PlayerInputManager : MonoBehaviour
                 Quaternion rotationFromCameraUpToGravityUp = Quaternion.FromToRotation(Camera.main.transform.up, (Vector3)gravityDir);
                 Vector3 adjustedCameraForward = rotationFromCameraUpToGravityUp * Camera.main.transform.forward;
 
-                Debug.DrawRay(this.transform.position, adjustedCameraForward * 3f, Color.cyan);
-                Debug.DrawRay(this.transform.position, (Vector3)gravityDir * 3f, Color.cyan);
+                //Debug.DrawRay(this.transform.position, adjustedCameraForward * 3f, Color.cyan);
+                //Debug.DrawRay(this.transform.position, (Vector3)gravityDir * 3f, Color.cyan);
 
                 float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
 
-                Debug.Log("" + dir.x + " / " + dir.y + " = " + (dir.x / dir.y));
-                Debug.Log("arctan(" + dir.x / dir.y + ") = " + Mathf.Atan(dir.x / dir.y) + " or " + inputAsAngleDegrees);
+                //Debug.Log("" + dir.x + " / " + dir.y + " = " + (dir.x / dir.y));
+                //Debug.Log("arctan(" + dir.x / dir.y + ") = " + Mathf.Atan(dir.x / dir.y) + " or " + inputAsAngleDegrees);
 
                 Quaternion necessaryRotation = Quaternion.AngleAxis(inputAsAngleDegrees, (Vector3)gravityDir);
 
