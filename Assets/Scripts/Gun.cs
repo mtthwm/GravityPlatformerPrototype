@@ -12,7 +12,7 @@ public class Gun : MonoBehaviour
 
     [SerializeField] float fireRate = 0.1f;
     [SerializeField] float reloadSpeed = 1f;
-    [SerializeField] float spread = 0.1f;
+    [SerializeField] float spread = 45f;
     [SerializeField] int capacity = 10; // NOT USED
     [SerializeField] int bulletCount = 1;
     [SerializeField] float range = 50f;
@@ -77,9 +77,8 @@ public class Gun : MonoBehaviour
 
     protected virtual void HandleShot (Vector3 target)
     {
-        Debug.Log("SHOT!");
         RaycastHit hit;
-        bool hasHit = Physics.Raycast(origin.position, target - origin.position, out hit, range, layers, QueryTriggerInteraction.Ignore);
+        bool hasHit = Physics.Raycast(origin.position, ObtainDirection(target), out hit, range, layers, QueryTriggerInteraction.Ignore);
 
         if (hasHit)
         {
@@ -90,6 +89,17 @@ public class Gun : MonoBehaviour
         {
             StartCoroutine(BulletTrailCoroutine(origin.position, target, trailPersistTime));
         }
+    }
+
+    protected virtual Vector3 ObtainDirection (Vector3 target)
+    {
+        Debug.Log("ObtainDirection");
+        Vector3 randomlyRotatedVector = Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up) * Vector3.right;
+        Vector3 adjustedRandomlyRotatedVector = Quaternion.FromToRotation(Vector3.up, (target - origin.position).normalized) * randomlyRotatedVector;
+        float randomRotation = Random.Range(-spread, spread);
+        Debug.Log(randomRotation + " ");
+        Quaternion finalRotation = Quaternion.AngleAxis(randomRotation, adjustedRandomlyRotatedVector);
+        return finalRotation * (target - origin.position).normalized;
     }
 
     protected virtual void ResolveHit (RaycastHit hit)
@@ -112,6 +122,7 @@ public class Gun : MonoBehaviour
 
     private Vector3 ObtainTarget ()
     {
-        return cameraTransform.position + (cameraTransform.forward.normalized * range);
+        Vector3 baseDirection = cameraTransform.position + (cameraTransform.forward.normalized * range);
+        return baseDirection;
     }
 }

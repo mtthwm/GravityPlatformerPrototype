@@ -77,7 +77,6 @@ public class BulletGun : MonoBehaviour
 
     protected virtual void HandleShot (Vector3 target)
     {
-        Debug.Log("SHOT!");
         RaycastHit hit;
         bool hasHit = Physics.Raycast(origin.position, target - origin.position, out hit, range, layers, QueryTriggerInteraction.Ignore);
 

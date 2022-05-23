@@ -40,4 +40,9 @@ public static class Utils
 
         return builder;
     }
+
+    public static Vector2 RandomVector ()
+    {
+        return (new Vector2(Random.Range(-1, 1), Random.Range(-1, 1))).normalized;
+    }
 }

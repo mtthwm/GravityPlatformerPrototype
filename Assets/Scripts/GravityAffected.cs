@@ -23,7 +23,6 @@ public class GravityAffected : MonoBehaviour
     /// <returns>The normalized vector.</returns>
     public Vector3? GetGravityDirection()
     {
-        Debug.Log("GetGravityDirection! " + Utils.ListToString<GravityField>(fields));
         if (fields.Count > 0)
         {
             GravityField currentField = fields[0];
