@@ -24,6 +24,7 @@ public class Gun : MonoBehaviour
     Transform origin;
     Transform cameraTransform;
     int continuousShots;
+    protected bool isShooting;
 
     Vector3 debug_target;
 
@@ -41,12 +42,16 @@ public class Gun : MonoBehaviour
 
     public virtual void BeginShoot ()
     {
+        Debug.Log("BEGIN SHOOT");
         StartCoroutine("ShootCoroutine");
+        isShooting = true;
     }
 
     public virtual void EndShoot()
     {
+        Debug.Log("END SHOOT");
         StopCoroutine("ShootCoroutine");
+        isShooting = false;
     }
 
     private IEnumerator ShootCoroutine ()

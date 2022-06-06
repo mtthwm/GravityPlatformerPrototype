@@ -11,11 +11,20 @@ public class GrapplingHook : Gun
 
     [SerializeField] GravityAffectedMovement gravityMovement;
     [SerializeField] float pullAccelleration = 5f;
+    bool canGrapple = true;
 
     protected override void ResolveHit (RaycastHit hit)
     {
+        if (canGrapple)
+        {
+            gravityMovement.Accellerate((hit.point - gravityMovement.transform.position).normalized * pullAccelleration);
+        }
+    }
+
+    public override void BeginShoot()
+    {
         OnGrappleStart?.Invoke();
-        gravityMovement.Accellerate((hit.point - gravityMovement.transform.position).normalized * pullAccelleration);
+        base.BeginShoot();
     }
 
     public override void EndShoot ()
@@ -23,5 +32,23 @@ public class GrapplingHook : Gun
         OnGrappleEnd?.Invoke();
         base.EndShoot();
         gravityMovement.EndAccelleration();
+    }
+
+    private void HandleCrash ()
+    {
+        if (isShooting)
+        {
+            EndShoot();
+        }
+    }
+
+    private void OnEnable()
+    {
+        CrashManager.OnCrash += HandleCrash;
+    }
+
+    private void OnDisable()
+    {
+        CrashManager.OnCrash -= HandleCrash;
     }
 }

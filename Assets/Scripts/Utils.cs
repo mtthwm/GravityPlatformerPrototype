@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cinemachine;
 
 public static class Utils
 {
@@ -46,5 +47,13 @@ public static class Utils
     {
         yield return new WaitForSeconds(time);
         action.Invoke();
+    }
+
+    public static void SwapCameras (CinemachineVirtualCameraBase camera1, CinemachineVirtualCameraBase camera2)
+    {
+        Debug.Log("SWAP");
+        int camera1Priority = camera1.Priority;
+        camera1.Priority = camera2.Priority;
+        camera2.Priority = camera1Priority;
     }
 }
