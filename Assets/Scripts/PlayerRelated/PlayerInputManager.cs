@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using Cinemachine;
 
 public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] Transform cameraTarget;
+    [SerializeField] CinemachineVirtualCamera shoulderCamera;
 
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
@@ -62,6 +64,18 @@ public class PlayerInputManager : MonoBehaviour
         {
             isShooting = false;
             gunManager.EndShootSecondary();
+        }
+    }
+
+    public void ToggleScope (InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            shoulderCamera.Priority = 10;
+        }
+        else if (value.canceled)
+        {
+            shoulderCamera.Priority = 0;
         }
     }
 
