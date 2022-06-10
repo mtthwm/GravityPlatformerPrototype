@@ -67,6 +67,11 @@ public class GravityAffectedMovement : MonoBehaviour
         return facingDir;
     }
 
+    /// <summary>
+    /// Sets the facing direction.
+    /// </summary>
+    /// <param name="direction">The direction.</param>
+    /// <returns>The time that it will take to rotate</returns>
     public void SetFacingDirection (Vector3 direction)
     {
         facingDir = direction;

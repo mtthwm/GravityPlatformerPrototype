@@ -7,13 +7,18 @@ using Cinemachine;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    [SerializeField] Transform cameraTarget;
+    public delegate void ScopeAction(bool scoped);
+    public static event ScopeAction OnToggleScope;
+
+    [SerializeField] Transform movementCameraTarget;
+    [SerializeField] Transform shoulderCameraTarget;
     [SerializeField] CinemachineVirtualCamera shoulderCamera;
 
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
     private GunManager gunManager;
     private bool isShooting;
+    private bool isScoped;
 
     InputAction.CallbackContext? callbackContext;
 
@@ -71,11 +76,24 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (value.performed)
         {
+            // Turn to face the proper direction
+            Vector3? gravityDir = gravityAffected.GetGravityDirection();
+            if (gravityDir != null)
+            {
+                gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
+            }
+
+            isScoped = true;
+
+            // Switch to shoulderCamera and broadcast the scope event
             shoulderCamera.Priority = 10;
+            OnToggleScope?.Invoke(true);
         }
         else if (value.canceled)
         {
+            isScoped = false;
             shoulderCamera.Priority = 0;
+            OnToggleScope?.Invoke(false);
         }
     }
 
@@ -93,7 +111,8 @@ public class PlayerInputManager : MonoBehaviour
     private void Update()
     {
         HandleMove();
-        UpdateCameraTarget();
+        UpdateMovementCameraTarget();
+        UpdateShoulderCameraTarget();
 
         if (isShooting)
         {
@@ -105,13 +124,24 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void UpdateCameraTarget ()
+    private void UpdateMovementCameraTarget ()
     {
         Vector3? gravityDir = gravityAffected.GetGravityDirection();
 
         if (gravityDir != null)
         {
-            cameraTarget.transform.up = (Vector3) gravityDir;
+            movementCameraTarget.transform.up = (Vector3)gravityDir;
+        }
+    }
+
+    private void UpdateShoulderCameraTarget ()
+    {
+        Vector3? gravityDir = gravityAffected.GetGravityDirection();
+
+        if (gravityDir != null)
+        {
+            shoulderCameraTarget.transform.forward = GetAdjustedCameraForward((Vector3)gravityDir).normalized;
+            //shoulderCameraTarget.transform.up = (Vector3)gravityDir;
         }
     }
 
