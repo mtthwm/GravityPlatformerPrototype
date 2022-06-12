@@ -141,7 +141,6 @@ public class PlayerInputManager : MonoBehaviour
         if (gravityDir != null)
         {
             shoulderCameraTarget.transform.forward = GetAdjustedCameraForward((Vector3)gravityDir).normalized;
-            //shoulderCameraTarget.transform.up = (Vector3)gravityDir;
         }
     }
 

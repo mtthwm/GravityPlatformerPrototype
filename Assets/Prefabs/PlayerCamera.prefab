@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 5793411571494549984}
   - component: {fileID: 5793411571494549985}
   - component: {fileID: 5793411571494549999}
+  - component: {fileID: 8864018185400046509}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -225,6 +226,19 @@ MonoBehaviour:
   PlayerIndex: -1
   XYAxis: {fileID: 2381822512947764079, guid: 254c1e86a7269ec4d8e9a4c8a40bc53c, type: 3}
   ZAxis: {fileID: 0}
+--- !u!114 &8864018185400046509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5793411571494549986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d94c7da30cfa1e4ab575046117897da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grapplingHookCamera: {fileID: 0}
 --- !u!1 &5793411571716029104
 GameObject:
   m_ObjectHideFlags: 0
