@@ -4,16 +4,29 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GravityAffected : MonoBehaviour
 {
+    public delegate void EnterGravityFieldAction();
+    public event EnterGravityFieldAction OnEnterGravityField;
+    public delegate void ExitGravityFieldAction();
+    public event ExitGravityFieldAction OnExitGravityField;
+
     List<GravityField> fields = new List<GravityField>();
     Rigidbody rb;
 
     public void AddAffectingField (GravityField field)
     {
+        if (fields.Count == 0)
+        {
+            OnEnterGravityField?.Invoke();
+        }
         fields.Add(field);
     }
 
     public void RemoveAffectingField (GravityField field)
     {
+        if (fields.Count == 1)
+        {
+            OnExitGravityField?.Invoke();
+        }
         fields.Remove(field);
     }
 

@@ -360,8 +360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementAccelleration: 5
-  rotationAccelleration: 2
-  jumpForce: 2000
+  rotationSpeed: 2
+  jumpForce: 1500
   gravityForce: -40
   gravityPauseTime: 0.2
   maxMovementVelocity: 15

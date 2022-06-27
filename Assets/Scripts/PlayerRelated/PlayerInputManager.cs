@@ -9,8 +9,15 @@ public class PlayerInputManager : MonoBehaviour
 {
     public delegate void ScopeAction(bool scoped);
     public static event ScopeAction OnToggleScope;
+    public enum MovementType
+    {
+        Normal,
+        ZeroG,
+    };
 
     [SerializeField] bool turnToShootDir = false;
+
+    public MovementType movementType { get; private set; }
 
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
@@ -118,9 +125,11 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleMove();
 
+        Vector3 gravityDir = gravityAffected.GetGravityDirection();
+
         if (isShooting)
         {
-            Vector3 gravityDir = gravityAffected.GetGravityDirection();
+            
             gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward(gravityDir));
         }
 
@@ -149,7 +158,15 @@ public class PlayerInputManager : MonoBehaviour
 
             Vector2 dir = safeContext.ReadValue<Vector2>();
 
-            Vector3 adjustedCameraForward = GetAdjustedCameraForward(gravityDir);
+            Vector3 adjustedCameraForward;
+            if (gravityDir == Vector3.zero)
+            {
+                adjustedCameraForward = GetAdjustedCameraForward(gravityDir);
+            }
+            else
+            {
+                adjustedCameraForward = Camera.main.transform.forward;
+            }
 
             // Get a representation of the input vector as an angle
             float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
@@ -162,11 +179,6 @@ public class PlayerInputManager : MonoBehaviour
 
             gravityAffectedMovement.Move(Utils.IsPointingDown(dir) * realMoveDir);
         }
-        else
-        {
-            gravityAffectedMovement.EndMove();
-        }
-
     }
 }
 

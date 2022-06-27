@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class GravityAffectedMovement : MonoBehaviour
 {
+    [Header("Standard Movement")]
     [SerializeField] float movementAccelleration = 5f;
-    [SerializeField] float rotationSpeed = 2f;
     [SerializeField] float jumpForce = 20f;
-    [SerializeField] float gravityForce = -9.8f;
     [SerializeField] float gravityPauseTime = 0.4f;
     [SerializeField] float maxMovementVelocity = 10f;
+    [SerializeField] float gravityForce = -9.8f;
+
+    [Header("Zero G Movement")]
+    [SerializeField] float thrusterAccelleration = 5f;
+
+    [Header("General")]
+    [SerializeField] float rotationSpeed = 2f;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundLayers;
     [SerializeField] GameObject rig;
 
-    Vector3 moveVelocity;
-    Vector3 gravityVelocity;
-    private float lastJump;
     Vector3 facingDir;
     GravityAffected gravityAffected;
     Rigidbody rb;
-    Vector3 accelleration;
+    float cachedDrag;
 
     /// <summary>
     /// Directly moves an object in the specified direction. USE WITH CAUTION!!
@@ -41,15 +44,11 @@ public class GravityAffectedMovement : MonoBehaviour
     /// <param name="dir">The 2D Direction.</param>
     public void Move(Vector2 dir)
     {
+
         Vector3 gravityDir = gravityAffected.GetGravityDirection();
 
         Vector3 realMoveDir = Utils.Align2DVector(gravityDir, dir);
         Move(realMoveDir);
-    }
-
-    public void EndMove()
-    {
-        moveVelocity = Vector3.zero;
     }
 
     public void Jump()
@@ -58,7 +57,6 @@ public class GravityAffectedMovement : MonoBehaviour
         if (IsGrounded())
         {
             rb.AddForce(dir * jumpForce);
-            lastJump = Time.time;
         }
     }
 
@@ -93,6 +91,7 @@ public class GravityAffectedMovement : MonoBehaviour
         facingDir = rig.transform.forward;
         gravityAffected = GetComponent<GravityAffected>();
         rb = gameObject.GetComponent<Rigidbody>();
+        cachedDrag = rb.drag;
     }
 
     private void FixedUpdate()
@@ -101,34 +100,31 @@ public class GravityAffectedMovement : MonoBehaviour
         HandleGravity();
     }
 
+    /// <summary>
+    /// Applies force due to gravity, as well as handles toggling drag
+    /// </summary>
     private void HandleGravity ()
     {
-        rb.AddForce(gravityAffected.GetGravityDirection() * gravityForce);
-    }
+        Vector3 dir = gravityAffected.GetGravityDirection();
+        rb.AddForce(dir * gravityForce);
 
-    /// <summary>
-    /// [Deprecated] A remnant of the former movement system
-    /// </summary>
-    private void HandleVelocity()
-    {
-        if (accelleration == Vector3.zero)
+        if (dir == Vector3.zero)
         {
-            rb.velocity = moveVelocity + gravityVelocity;
-            if (Time.time - lastJump >= gravityPauseTime)
-            {
-                gravityVelocity = (Vector3)gravityAffected.GetGravityDirection() * gravityForce;
-            }
+            rb.drag = 0;
         }
         else
         {
-            rb.velocity += accelleration;
+            rb.drag = cachedDrag;
         }
     }
 
     private void RotateFacing()
     {
         Vector3 dir = gravityAffected.GetGravityDirection();
-        rig.transform.rotation = Quaternion.RotateTowards(Quaternion.LookRotation(rig.transform.forward, rig.transform.up), Quaternion.LookRotation(facingDir, dir), rotationSpeed);
+        if (dir != Vector3.zero)
+        {
+            rig.transform.rotation = Quaternion.RotateTowards(Quaternion.LookRotation(rig.transform.forward, rig.transform.up), Quaternion.LookRotation(facingDir, dir), rotationSpeed);
+        }
     }
 
     private bool IsGrounded ()
