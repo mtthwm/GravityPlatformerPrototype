@@ -21,16 +21,18 @@ public class GravityAffected : MonoBehaviour
     /// Gets the direction that the active gravity field is exerting a force in.
     /// </summary>
     /// <returns>The normalized vector.</returns>
-    public Vector3? GetGravityDirection()
+    public Vector3 GetGravityDirection()
     {
         if (fields.Count > 0)
         {
             GravityField currentField = fields[0];
             Vector3 dir = currentField.getGravityDirection(this.transform.position);
             return dir;
+        } 
+        else
+        {
+            return Vector3.zero;
         }
-
-        return null;
     }
 
     private void OnValidate()

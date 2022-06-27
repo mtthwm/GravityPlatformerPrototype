@@ -37,14 +37,10 @@ public class GravityAffectedMovement : MonoBehaviour
     /// <param name="dir">The 2D Direction.</param>
     public void Move(Vector2 dir)
     {
-        Vector3? gravityDir = gravityAffected.GetGravityDirection();
+        Vector3 gravityDir = gravityAffected.GetGravityDirection();
 
-        if (gravityDir != null)
-        {
-            Vector3 realMoveDir = Utils.Align2DVector((Vector3)gravityDir, dir);
-            
-            Move(realMoveDir);
-        }
+        Vector3 realMoveDir = Utils.Align2DVector(gravityDir, dir);
+        Move(realMoveDir);
     }
 
     public void EndMove()
@@ -54,10 +50,10 @@ public class GravityAffectedMovement : MonoBehaviour
 
     public void Jump()
     {
-        Vector3? dir = gravityAffected.GetGravityDirection();
-        if (dir != null && IsGrounded())
+        Vector3 dir = gravityAffected.GetGravityDirection();
+        if (IsGrounded())
         {
-            gravityVelocity += (Vector3)dir * jumpForce;
+            gravityVelocity += dir * jumpForce;
             lastJump = Time.time;
         }
     }
@@ -105,14 +101,10 @@ public class GravityAffectedMovement : MonoBehaviour
     {
         if (accelleration == Vector3.zero)
         {
-            Vector3? dir = gravityAffected.GetGravityDirection();
-            if (dir != null)
+            rb.velocity = moveVelocity + gravityVelocity;
+            if (Time.time - lastJump >= gravityPauseTime)
             {
-                rb.velocity = moveVelocity + gravityVelocity;
-                if (Time.time - lastJump >= gravityPauseTime)
-                {
-                    gravityVelocity = (Vector3)gravityAffected.GetGravityDirection() * gravityForce;
-                }
+                gravityVelocity = (Vector3)gravityAffected.GetGravityDirection() * gravityForce;
             }
         }
         else
@@ -123,11 +115,8 @@ public class GravityAffectedMovement : MonoBehaviour
 
     private void RotateFacing()
     {
-        Vector3? dir = gravityAffected.GetGravityDirection();
-        if (dir != null)
-        {
-            rig.transform.rotation = Quaternion.RotateTowards(Quaternion.LookRotation(rig.transform.forward, rig.transform.up), Quaternion.LookRotation(facingDir, (Vector3)dir), rotationSpeed);
-        }
+        Vector3 dir = gravityAffected.GetGravityDirection();
+        rig.transform.rotation = Quaternion.RotateTowards(Quaternion.LookRotation(rig.transform.forward, rig.transform.up), Quaternion.LookRotation(facingDir, dir), rotationSpeed);
     }
 
     private bool IsGrounded ()

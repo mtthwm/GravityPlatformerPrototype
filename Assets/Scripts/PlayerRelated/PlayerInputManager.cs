@@ -10,6 +10,8 @@ public class PlayerInputManager : MonoBehaviour
     public delegate void ScopeAction(bool scoped);
     public static event ScopeAction OnToggleScope;
 
+    [SerializeField] bool turnToShootDir = false;
+
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
     private GunManager gunManager;
@@ -72,11 +74,11 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (value.performed)
         {
-            // Turn to face the proper direction
-            Vector3? gravityDir = gravityAffected.GetGravityDirection();
-            if (gravityDir != null)
+            if (turnToShootDir)
             {
-                gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
+                // Turn to face the proper direction
+                Vector3 gravityDir = gravityAffected.GetGravityDirection();
+                gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward(gravityDir));
             }
 
             isScoped = true;
@@ -108,12 +110,12 @@ public class PlayerInputManager : MonoBehaviour
 
         if (isShooting)
         {
-            Vector3? gravityDir = gravityAffected.GetGravityDirection();
-            if (gravityDir != null)
-            {
-                gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward((Vector3)gravityDir));
-            }
+            Vector3 gravityDir = gravityAffected.GetGravityDirection();
+            gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward(gravityDir));
         }
+
+        // Constantly change where the player is facing
+        gravityAffectedMovement.SetFacingDirection(GetAdjustedCameraForward(gravityAffected.GetGravityDirection()));
     }
 
     /// <summary>
@@ -133,25 +135,22 @@ public class PlayerInputManager : MonoBehaviour
         if (callbackContext != null)
         {
             InputAction.CallbackContext safeContext = (InputAction.CallbackContext)callbackContext;
-            Vector3? gravityDir = gravityAffected.GetGravityDirection();
+            Vector3 gravityDir = gravityAffected.GetGravityDirection();
 
             Vector2 dir = safeContext.ReadValue<Vector2>();
 
-            if (gravityDir != null)
-            {
-                Vector3 adjustedCameraForward = GetAdjustedCameraForward((Vector3)gravityDir);
+            Vector3 adjustedCameraForward = GetAdjustedCameraForward(gravityDir);
 
-                // Get a representation of the input vector as an angle
-                float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
+            // Get a representation of the input vector as an angle
+            float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
 
-                // Build a quaternion using the input angle with the gravity up direction as the axis of rotation
-                Quaternion necessaryRotation = Quaternion.AngleAxis(inputAsAngleDegrees, (Vector3)gravityDir);
+            // Build a quaternion using the input angle with the gravity up direction as the axis of rotation
+            Quaternion necessaryRotation = Quaternion.AngleAxis(inputAsAngleDegrees, gravityDir);
 
-                // Rotate the "forward" by the input angle
-                Vector3 realMoveDir = necessaryRotation * adjustedCameraForward;
+            // Rotate the "forward" by the input angle
+            Vector3 realMoveDir = necessaryRotation * adjustedCameraForward;
 
-                gravityAffectedMovement.Move(Utils.IsPointingDown(dir) * realMoveDir);
-            }
+            gravityAffectedMovement.Move(Utils.IsPointingDown(dir) * realMoveDir);
         }
         else
         {
