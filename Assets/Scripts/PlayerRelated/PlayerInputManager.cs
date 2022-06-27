@@ -116,6 +116,11 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets a vector that points "forward" given the camera's current rotation and the gravity direction
+    /// </summary>
+    /// <param name="normal">A normal representing the gravity direction</param>
+    /// <returns></returns>
     private Vector3 GetAdjustedCameraForward (Vector3 normal)
     {
         Quaternion rotationFromCameraUpToGravityUp = Quaternion.FromToRotation(Camera.main.transform.up, normal);
@@ -136,10 +141,13 @@ public class PlayerInputManager : MonoBehaviour
             {
                 Vector3 adjustedCameraForward = GetAdjustedCameraForward((Vector3)gravityDir);
 
+                // Get a representation of the input vector as an angle
                 float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
 
+                // Build a quaternion using the input angle with the gravity up direction as the axis of rotation
                 Quaternion necessaryRotation = Quaternion.AngleAxis(inputAsAngleDegrees, (Vector3)gravityDir);
 
+                // Rotate the "forward" by the input angle
                 Vector3 realMoveDir = necessaryRotation * adjustedCameraForward;
 
                 gravityAffectedMovement.Move(Utils.IsPointingDown(dir) * realMoveDir);
