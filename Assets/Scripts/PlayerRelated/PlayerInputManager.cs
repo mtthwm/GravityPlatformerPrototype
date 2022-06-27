@@ -14,6 +14,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private GravityAffectedMovement gravityAffectedMovement;
     private GravityAffected gravityAffected;
+    private MouseRotation mouseRotation;
     private GunManager gunManager;
     private bool isShooting;
     private bool isScoped;
@@ -25,6 +26,7 @@ public class PlayerInputManager : MonoBehaviour
         gravityAffectedMovement = GetComponent<GravityAffectedMovement>();
         gravityAffected = GetComponent<GravityAffected>();
         gunManager = GetComponent<GunManager>();
+        mouseRotation = GetComponent<MouseRotation>();
     }
 
     public void HandleMovement(InputAction.CallbackContext value)
@@ -39,6 +41,14 @@ public class PlayerInputManager : MonoBehaviour
             {
                 callbackContext = null;
             }
+        }
+    }
+
+    public void HandleLook(InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            mouseRotation.Rotate(value.ReadValue<Vector2>());
         }
     }
 
