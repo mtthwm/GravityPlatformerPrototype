@@ -637,6 +637,7 @@ MonoBehaviour:
   body: {fileID: 1342773192}
   XSensitivity: 0.541
   YSensitivity: 0.529
+  LimitYRotation: 45
   InvertY: 0
   InvertX: 0
 --- !u!4 &1342773192 stripped
