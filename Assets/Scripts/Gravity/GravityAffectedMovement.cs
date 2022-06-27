@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityAffectedMovement : MonoBehaviour
 {
-    [SerializeField] float movementSpeed = 5f;
+    [SerializeField] float movementAccelleration = 5f;
     [SerializeField] float rotationSpeed = 2f;
     [SerializeField] float jumpForce = 20f;
     [SerializeField] float gravityForce = -9.8f;
     [SerializeField] float gravityPauseTime = 0.4f;
+    [SerializeField] float maxMovementVelocity = 10f;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundLayers;
     [SerializeField] GameObject rig;
@@ -28,7 +27,12 @@ public class GravityAffectedMovement : MonoBehaviour
     public void Move(Vector3 dir)
     {
         facingDir = dir;
-        moveVelocity = dir * movementSpeed;
+
+        //Check if the velocity in the movement direction is within the threshold
+        if (Vector3.Dot(rb.velocity, dir) < maxMovementVelocity)
+        {
+            rb.AddForce(dir * movementAccelleration);
+        }
     }
 
     /// <summary>
@@ -53,7 +57,7 @@ public class GravityAffectedMovement : MonoBehaviour
         Vector3 dir = gravityAffected.GetGravityDirection();
         if (IsGrounded())
         {
-            gravityVelocity += dir * jumpForce;
+            rb.AddForce(dir * jumpForce);
             lastJump = Time.time;
         }
     }
@@ -75,13 +79,13 @@ public class GravityAffectedMovement : MonoBehaviour
 
     public void Accellerate (Vector3 accelleration)
     {
-        this.accelleration = accelleration;
+        //this.accelleration = accelleration;
     }
 
     public void EndAccelleration ()
     {
-        accelleration = Vector3.zero;
-        rb.velocity = Vector3.zero;
+        //accelleration = Vector3.zero;
+        //rb.velocity = Vector3.zero;
     }
 
     private void Start()
@@ -94,9 +98,17 @@ public class GravityAffectedMovement : MonoBehaviour
     private void FixedUpdate()
     {
         RotateFacing();
-        HandleVelocity();
+        HandleGravity();
     }
 
+    private void HandleGravity ()
+    {
+        rb.AddForce(gravityAffected.GetGravityDirection() * gravityForce);
+    }
+
+    /// <summary>
+    /// [Deprecated] A remnant of the former movement system
+    /// </summary>
     private void HandleVelocity()
     {
         if (accelleration == Vector3.zero)
