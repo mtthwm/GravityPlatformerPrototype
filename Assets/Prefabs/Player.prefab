@@ -360,11 +360,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementAccelleration: 5
-  rotationSpeed: 2
-  jumpForce: 1500
-  gravityForce: -40
+  jumpForce: 500
   gravityPauseTime: 0.2
   maxMovementVelocity: 15
+  gravityForce: -40
+  thrusterAccelleration: 5
+  rotationSpeed: 2
   groundCheck: {fileID: 2086395003547845723}
   groundLayers:
     serializedVersion: 2

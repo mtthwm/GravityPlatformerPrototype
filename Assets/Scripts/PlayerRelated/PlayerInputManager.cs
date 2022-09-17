@@ -157,16 +157,13 @@ public class PlayerInputManager : MonoBehaviour
             Vector3 gravityDir = gravityAffected.GetGravityDirection();
 
             Vector2 dir = safeContext.ReadValue<Vector2>();
-
-            Vector3 adjustedCameraForward;
+            
             if (gravityDir == Vector3.zero)
             {
-                adjustedCameraForward = GetAdjustedCameraForward(gravityDir);
+                return;
             }
-            else
-            {
-                adjustedCameraForward = Camera.main.transform.forward;
-            }
+
+            Vector3 adjustedCameraForward = GetAdjustedCameraForward(gravityDir);
 
             // Get a representation of the input vector as an angle
             float inputAsAngleDegrees = Mathf.Rad2Deg * Mathf.Atan(dir.x / dir.y);
